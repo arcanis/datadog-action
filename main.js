@@ -1,3 +1,5 @@
+require(`./.pnp.js`).setup();
+
 const {readFileSync} = require(`fs`);
 const {request} = require(`https`);
 const {get, set, template} = require(`lodash`);
