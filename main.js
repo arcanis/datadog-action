@@ -1,13 +1,14 @@
 require(`./.pnp.js`).setup();
 
+const {getInput} = require(`@actions/core`);
 const {readFileSync} = require(`fs`);
 const {request} = require(`https`);
 const {get, set, template} = require(`lodash`);
 
-const token = core.getInput(`token`, {required: true});
-const fields = core.getInput(`fields`, {required: true});
-const source = core.getInput(`source`, {required: true});
-const messageTpl = core.getInput(`message`, {required: true});
+const token = getInput(`token`, {required: true});
+const fields = getInput(`fields`, {required: true});
+const source = getInput(`source`, {required: true});
+const messageTpl = getInput(`message`, {required: true});
 
 const srcData = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, `utf8`));
 const dstData = {};
