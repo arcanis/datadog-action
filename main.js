@@ -4,6 +4,7 @@ const {getInput} = require(`@actions/core`);
 const {readFileSync} = require(`fs`);
 const {request} = require(`https`);
 const {get, set, template} = require(`lodash`);
+const {inspect} = require(`util`);
 
 const token = getInput(`token`, {required: true});
 const fields = getInput(`fields`, {required: true});
@@ -15,6 +16,9 @@ const dstData = {};
 
 for (const [dstKey, srcKey] of Object.entries(JSON.parse(fields)))
     set(dstData, dstKey, get(srcData, srcKey));
+
+console.log(srcData);
+console.log(inspect(dstData));
 
 const message = template(messageTpl, {
     sourceURL: null,
