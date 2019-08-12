@@ -17,7 +17,7 @@ function main() {
     const dstData = {};
 
     for (const [srcKey, expected] of Object.entries(JSON.parse(filters)))
-        if (get(srcData, srcKey) == expected)
+        if (get(srcData, srcKey) != expected)
             return 78;
 
     for (const [dstKey, srcKey] of Object.entries(JSON.parse(fields)))
