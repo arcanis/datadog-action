@@ -10,7 +10,7 @@ const message = core.getInput(`message`, {required: true});
 const srcData = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, `utf8`));
 const dstData = {};
 
-for (const [dstKey, srcKey] of Object.values(fields))
+for (const [dstKey, srcKey] of Object.values(JSON.parse(fields)))
     set(dstData, dstKey, get(srcData, srcKey));
 
 const message = template(message, {
@@ -30,7 +30,7 @@ req.write(
         source,
         message,
         date: Date.now(),
-        gh: dstData,
+        ...dstData,
     }),
 );
 
