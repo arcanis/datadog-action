@@ -9,6 +9,9 @@ inputs:
     fields:
         description: 'A target:source map of the fields to send'
         required: true
+    filters:
+        description: 'A set of fields that must equal the specified value'
+        default: '{}'
     source:
         description: 'The source field as displayed on DataDog'
         default: github

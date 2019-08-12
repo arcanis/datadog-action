@@ -8,33 +8,44 @@ const {inspect} = require(`util`);
 
 const token = getInput(`token`, {required: true});
 const fields = getInput(`fields`, {required: true});
+const filters = getInput(`filters`, {required: true});
 const source = getInput(`source`, {required: true});
 const messageTpl = getInput(`message`, {required: true});
 
-const srcData = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, `utf8`));
-const dstData = {};
+function main() {
+    const srcData = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, `utf8`));
+    const dstData = {};
 
-for (const [dstKey, srcKey] of Object.entries(JSON.parse(fields)))
-    set(dstData, dstKey, get(srcData, srcKey));
+    for (const [srcKey, expected] of srcData)
+        if (get(srcData, srcKey) == expected)
+            return 78;
 
-const message = template(messageTpl, {
-    sourceURL: null,
-})(dstData);
+    for (const [dstKey, srcKey] of Object.entries(JSON.parse(fields)))
+        set(dstData, dstKey, get(srcData, srcKey));
 
-const req = request({
-    method: `POST`,
-    hostname: `browser-http-intake.logs.datadoghq.com`,
-    path: `/v1/input/${token}?ddsource=${source}&ddtags=version:0.0.1-006e5ce2e8c82ebea2b1415ff9e71e7cef10182a`,
-    headers: {[`Content-Type`]: `text/plain;charset=UTF-8`},
-});
+    const message = template(messageTpl, {
+        sourceURL: null,
+    })(dstData);
 
-req.write(
-    JSON.stringify({
-        source,
-        message,
-        date: Date.now(),
-        gh: dstData,
-    }),
-);
+    const req = request({
+        method: `POST`,
+        hostname: `browser-http-intake.logs.datadoghq.com`,
+        path: `/v1/input/${token}?ddsource=${source}&ddtags=version:0.0.1-006e5ce2e8c82ebea2b1415ff9e71e7cef10182a`,
+        headers: {[`Content-Type`]: `text/plain;charset=UTF-8`},
+    });
 
-req.end();
+    req.write(
+        JSON.stringify({
+            source,
+            message,
+            date: Date.now(),
+            gh: dstData,
+        }),
+    );
+
+    req.end();
+
+    return 0;
+}
+
+process.exitCode = run();
