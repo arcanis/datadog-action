@@ -17,12 +17,8 @@ const dstData = {};
 for (const [dstKey, srcKey] of Object.entries(JSON.parse(fields)))
     set(dstData, dstKey, get(srcData, srcKey));
 
-console.log(srcData);
-console.log(inspect(dstData));
-
 const message = template(messageTpl, {
     sourceURL: null,
-    variable: `gh`,
 })(dstData);
 
 const req = request({
@@ -37,7 +33,7 @@ req.write(
         source,
         message,
         date: Date.now(),
-        ...dstData,
+        gh: dstData,
     }),
 );
 
