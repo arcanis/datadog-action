@@ -16,7 +16,7 @@ function main() {
     const srcData = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, `utf8`));
     const dstData = {};
 
-    for (const [srcKey, expected] of srcData)
+    for (const [srcKey, expected] of Object.entries(JSON.parse(filters)))
         if (get(srcData, srcKey) == expected)
             return 78;
 
