@@ -48,4 +48,4 @@ function main() {
     return 0;
 }
 
-process.exitCode = run();
+process.exitCode = main();
