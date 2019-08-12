@@ -1,0 +1,21 @@
+name: 'Emit DataDog Logs'
+description: 'Action to send logs to DataDog'
+author: 'Maël Nison'
+
+inputs:
+    token:
+        description: 'Token for the DataDog database. Can be passed in using a repository secret.'
+        required: true
+    fields:
+        description: 'A target:source map of the fields to send'
+        required: true
+    source:
+        description: 'The source field as displayed on DataDog'
+        default: github
+    message:
+        description: 'The message to attach to the log event'
+        default: 'Event from GitHub'
+
+runs:
+    using: 'node12'
+    main: 'main.js'

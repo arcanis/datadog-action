@@ -1,0 +1,12 @@
+{
+  "name": "datadog-action",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:arcanis/datadog-action",
+  "author": "Maël Nison <nison.mael@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.0.0",
+    "lodash": "^4.17.15"
+  }
+}
