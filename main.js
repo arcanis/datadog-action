@@ -13,11 +13,8 @@ const messageTpl = getInput(`message`, {required: true});
 const srcData = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, `utf8`));
 const dstData = {};
 
-for (const [dstKey, srcKey] of Object.values(JSON.parse(fields)))
+for (const [dstKey, srcKey] of Object.entries(JSON.parse(fields)))
     set(dstData, dstKey, get(srcData, srcKey));
-
-console.log({fields});
-console.log(dstData);
 
 const message = template(messageTpl, {
     sourceURL: null,
